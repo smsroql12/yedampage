@@ -1,0 +1,341 @@
+/* Intro Animation */
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #f0f8ff;
+    overflow: hidden; /* 화면 밖으로 나가는 양갈래 머리 스크롤 방지 */
+    position: relative;
+  }
+
+  /* ★ [핵심 수정] 중앙 정렬 전용 래퍼 ★
+     Flexbox 대신 절대 좌표를 사용하여 모바일에서도 무조건 정중앙에 오게 합니다.
+  */
+  .centering-wrapper {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    /* 자기 크기의 절반만큼 이동하여 정확한 중앙 맞춤 */
+    transform: translate(-50%, -50%);
+    width: 260px; /* 미쿠 컨테이너 크기 */
+    height: 300px;
+  }
+
+  /* 미쿠 컨테이너 (애니메이션 담당) */
+  .miku-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    /* translate와 충돌하지 않도록 애니메이션은 내부에서 실행 */
+    animation: bounce 0.4s infinite alternate ease-in-out;
+  }
+
+  /* --- 변수 설정 --- */
+  :root {
+    --teal: #39C5BB;
+    --skin: #ffe0d0;
+    --dark: #2a2a2a;
+    --gray: #d3d3d3;
+    --leek-white: #fdfdfd;
+    --leek-green: #4caf50;
+    --leek-border: #2e7d32;
+    --blush: #ffb6c1;
+  }
+
+  /* --- 1. 뒷머리 --- */
+  .pigtail {
+    position: absolute;
+    top: 60px;
+    width: 45px;
+    height: 200px;
+    background-color: var(--teal);
+    border-radius: 30px;
+    z-index: 0;
+    transform-origin: top center;
+  }
+  .pigtail.left {
+    left: -5px;
+    transform: rotate(30deg); /* 애니메이션 시작 각도와 일치 */
+    animation: sway-left 0.8s infinite alternate ease-in-out;
+  }
+  .pigtail.right {
+    right: -5px;
+    transform: rotate(-30deg);
+    animation: sway-right 0.8s infinite alternate ease-in-out;
+  }
+
+  /* --- 2. 다리 & 신발 --- */
+  .legs-container {
+    position: absolute;
+    top: 230px;
+    left: 85px;
+    width: 90px;
+    height: 60px;
+    z-index: 2;
+  }
+  .leg {
+    position: absolute;
+    top: 0;
+    width: 22px;
+    height: 77px;
+    background-color: var(--skin);
+  }
+  .leg.left { left: 10px; }
+  .leg.right { right: 10px; }
+
+  .boot {
+    position: absolute;
+    bottom: -4px;
+    width: 100%;
+    height: 40px;
+    background-color: var(--dark);
+    border-radius: 0 0 6px 6px;
+  }
+
+  /* ★ 추가된 신발 (다리 끝부분 칠하기) ★ */
+  .shoe {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 6px; /* 신발 두께 */
+    background-color: var(--teal);
+    border-radius: 0 0 6px 6px; /* 부츠 밑단 곡선에 맞춤 */
+  }
+
+  /* --- 3. 몸통 --- */
+  .body {
+    position: absolute;
+    top: 150px;
+    left: 80px;
+    width: 100px;
+    height: 90px;
+    background-color: var(--gray);
+    border-radius: 15px 15px 0 0;
+    z-index: 5;
+  }
+
+  .tie {
+    position: absolute;
+    top: 0;
+    left: 40px;
+    width: 20px;
+    height: 50px;
+    background-color: var(--teal);
+    clip-path: polygon(0 0, 100% 0, 80% 100%, 20% 100%);
+  }
+
+  .skirt {
+    position: absolute;
+    bottom: -25px;
+    left: -10px;
+    width: 120px;
+    height: 35px;
+    background-color: var(--dark);
+    clip-path: polygon(10% 0, 90% 0, 100% 100%, 0% 100%);
+    z-index: 6;
+  }
+  .skirt-line {
+    position: absolute; top: 0; width: 2px; height: 100%; background: #444;
+  }
+
+  /* --- 4. 머리 --- */
+  .head {
+    position: absolute;
+    top: 30px;
+    left: 40px;
+    width: 180px;
+    height: 140px;
+    background-color: var(--skin);
+    border-radius: 60px 60px 70px 70px;
+    z-index: 10;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  }
+
+  /* --- 5. 앞머리 (뾰족 M자) --- */
+  .bangs-container {
+    position: absolute;
+    top: -15px;
+    left: -10px;
+    width: 200px;
+    height: 90px;
+    z-index: 12;
+  }
+  .bang-strand {
+    position: absolute;
+    background-color: var(--teal);
+    top: 0;
+  }
+  .bang-strand.left {
+    left: 5px; width: 95px; height: 90px;
+    border-radius: 50px 20px 80px 0; 
+    transform: rotate(5deg);
+  }
+  .bang-strand.right {
+    right: 5px; width: 95px; height: 90px;
+    border-radius: 20px 50px 0 80px;
+    transform: rotate(-5deg);
+  }
+  .bang-strand.center {
+    left: 50%; top: 2px; width: 40px; height: 60px;
+    transform: translateX(-50%);
+    border-radius: 0 0 20px 20px;
+    z-index: -1; 
+  }
+
+  .eye {
+    position: absolute; top: 85px; width: 16px; height: 16px;
+    background-color: var(--dark); border-radius: 50%; z-index: 13;
+  }
+  .eye.left { left: 50px; }
+  .eye.right { right: 50px; }
+
+  .blush {
+    position: absolute; top: 95px; width: 24px; height: 14px;
+    background-color: var(--blush); border-radius: 50%; opacity: 0.6; z-index: 13;
+  }
+  .blush.left { left: 30px; }
+  .blush.right { right: 30px; }
+
+  .mouth {
+    position: absolute; bottom: 30px; left: 80px; width: 20px; height: 25px;
+    background-color: #8b3a3a; border-radius: 5px 5px 15px 15px; z-index: 13;
+  }
+
+  /* --- 6. 팔 & 손 --- */
+  .arm-wrapper-left {
+    position: absolute;
+    top: 155px; left: 50px;
+    transform: rotate(20deg); z-index: 8;
+  }
+  .sleeve-left {
+    width: 40px; height: 70px; background-color: var(--dark);
+    clip-path: polygon(20% 0, 80% 0, 100% 100%, 0% 100%);
+  }
+  .hand-left {
+    position: absolute; bottom: -12px; left: 8px;
+    width: 24px; height: 24px; background-color: var(--skin);
+    border-radius: 50%; z-index: -1;
+  }
+
+  /* 오른쪽 팔 (흔들기) */
+  .arm-wrapper-right {
+    position: absolute;
+    top: 155px; right: 50px;
+    transform-origin: top center;
+    animation: wave-arm 0.3s infinite alternate ease-in-out;
+    z-index: 20;
+  }
+  .sleeve-right {
+    width: 40px; height: 70px; background-color: var(--dark);
+    clip-path: polygon(20% 0, 80% 0, 100% 100%, 0% 100%);
+    transform: rotate(-40deg);
+  }
+  .hand-right {
+    position: absolute; bottom: -5px; right: -25px;
+    width: 24px; height: 24px; background-color: var(--skin);
+    border-radius: 50%; z-index: 10;
+  }
+
+  /* --- 7. 대파 (Y자) --- */
+  .leek-wrapper {
+    position: absolute;
+    bottom: 5px; left: 1px;
+    width: 11px; height: 110px;
+    transform: rotate(30deg);
+    transform-origin: bottom center;
+    z-index: 15;
+  }
+  .leek-stem {
+    position: absolute; bottom: 0; width: 100%; height: 40%;
+    background: linear-gradient(to top, var(--leek-white), #e8f5e9);
+    border: 1px solid var(--leek-border); border-radius: 0 0 4px 4px; z-index: 2;
+  }
+  .leek-body {
+    position: absolute; bottom: 40%; width: 100%; height: 35%;
+    background-color: var(--leek-green);
+    border-left: 1px solid var(--leek-border);
+    border-right: 1px solid var(--leek-border); z-index: 1;
+  }
+  .leek-branch-left {
+    position: absolute; bottom: 74%; left: 1px; width: 9px; height: 35px;
+    background-color: var(--leek-green); border: 1px solid var(--leek-border);
+    border-bottom: none; border-radius: 6px 6px 0 6px;
+    transform: rotate(-25deg); transform-origin: bottom right;
+  }
+  .leek-branch-right {
+    position: absolute; bottom: 74%; right: -1px; width: 9px; height: 35px;
+    background-color: var(--leek-green); border: 1px solid var(--leek-border);
+    border-bottom: none; border-radius: 6px 6px 6px 0;
+    transform: rotate(25deg); transform-origin: bottom left;
+  }
+  .leek-joint {
+    position: absolute; bottom: 74%; left: 1px; width: 12px; height: 10px;
+    background-color: var(--leek-green); z-index: 5;
+  }
+
+  /* --- 애니메이션 --- */
+  @keyframes bounce {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(6px); }
+  }
+  @keyframes sway-left {
+    0% { transform: rotate(12deg); }
+    100% { transform: rotate(25deg); }
+  }
+  @keyframes sway-right {
+    0% { transform: rotate(-12deg); }
+    100% { transform: rotate(-25deg); }
+  }
+  @keyframes wave-arm {
+    0% { transform: rotate(-10deg); } 
+    100% { transform: rotate(-50deg); } 
+  }
+
+  .line-1{
+    position: relative;
+    top: 50%;  
+    width: 15em;
+    margin: 0 auto;
+    border-right: 2px solid rgba(255,255,255,.75);
+    font-size: 115%;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    transform: translateY(-50%);    
+  }
+
+  /* Animation */
+  .anim-typewriter{
+    animation: typewriter 1.8s steps(44) 0.1s 1 normal both,
+              blinkTextCursor 500ms steps(44) infinite normal;
+  }
+  @keyframes typewriter{
+    from{width: 0;}
+    to{width: 15em;}
+  }
+  @keyframes blinkTextCursor{
+    from{border-right-color: rgba(0,0,0,.75);}
+    to{border-right-color: transparent;}
+  }
+
+    .bottom-btn {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        border: none;
+        border-radius: 16px;
+        color: white;
+        padding: 5px;
+        font-weight: bold;
+        box-shadow: 0px 5px 15px gray;
+    }
+
+    body.no-bg {
+        background: none;
+    }
+    .text {
+        font-family: 'miku', sans-serif;
+        margin-bottom: 20px;
+    }
